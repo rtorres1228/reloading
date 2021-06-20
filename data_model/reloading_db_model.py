@@ -10,6 +10,13 @@ Base = declarative_base()
 
 DB_ENGINE = get_database_engine()
 
+PARAMS = {
+    'save-update': True,
+    'delete': True,
+    'delete-orphan': True,
+    'merge': True
+}
+
 
 class Contributor(Base):
     """ contributor """
@@ -18,7 +25,7 @@ class Contributor(Base):
     id = Column(Integer, primary_key=True, autoincrement="auto")
     email = Column('email', String(255), primary_key=True, nullable=False)
     name = Column('name', String(255), nullable=True)
-    calibers = relationship("Caliber")
+    calibers = relationship("Caliber", **PARAMS)
 
 
 class Caliber(Base):
@@ -29,7 +36,7 @@ class Caliber(Base):
     id = Column(Integer, primary_key=True, autoincrement="auto")
     contributor_id = Column(Integer, ForeignKey('tbl_contributor.id'))
     caliber_name = Column('caliber_name', String(255), unique=True, nullable=False)
-    load = relationship("Load")
+    load = relationship("Load", **PARAMS)
 
 
 class Load(Base):
