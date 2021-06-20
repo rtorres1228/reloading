@@ -13,7 +13,7 @@ class Caliber(Base):
     __tablename__ = "tbl_caliber"
 
     id = Column(Integer, primary_key=True, autoincrement="auto")
-    caliber_name = Column(String(255), unique=True, nullable=False)
+    caliber_name = Column('caliber_name', String(255), unique=True, nullable=False)
 
 class Weight(Base):
     """bullet weight"""
@@ -22,29 +22,29 @@ class Weight(Base):
 
     id = Column(Integer, primary_key=True, autoincrement="auto")
     # bullet weight
-    weight = Column(Integer, nullable=False)
+    weight = Column('weight', Integer, nullable=False)
 
 class Load(Base):
     """load"""
 
     __tablename__ = 'tbl_load'
     id = Column(Integer, primary_key=True, autoincrement="auto")
-    load_name = caliber_name = Column(String(255), unique=True, nullable=False)
-    powder_charge = Column(Integer, nullable=False)
+    load_name = caliber_name = Column('load_name', String(255), unique=True, nullable=False)
+    powder_charge = Column('powder_charge', Integer, nullable=False)
     # R or P
-    primer_type = Column(String(1), nullable=False)
+    primer_type = Column('primer_type', String(1), nullable=False)
     # L or S
-    primer_size = Column(String(1), nullable=False)
-    primer_brand = Column(String(255), nullable=False)
-    powder_brand = Column(String(255), nullable=False)
+    primer_size = Column('primer_size', String(1), nullable=False)
+    primer_brand = Column('primer_brand', String(255), nullable=False)
+    powder_brand = Column('powder_brand', String(255), nullable=False)
     # feet per second
-    FPS = Column(Integer, nullable=True)
+    FPS = Column('FPS', Integer, nullable=True)
     # power factor
-    PF = Column(Integer, nullable=True)
+    PF = Column('PF', Integer, nullable=True)
 
 class Contributor(Base):
     """ contributor """
     __table_name = 'tbl_contributor'
     id = Column(Integer, primary_key=True, autoincrement="auto")
-    email = Column(String(255), nullable=False)
-    name = Column(String(255), nullable=True)
+    email = Column('email', String(255), nullable=False)
+    name = Column('name', String(255), nullable=True)
