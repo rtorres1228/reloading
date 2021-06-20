@@ -27,8 +27,8 @@ class Caliber(Base):
     __tablename__ = "tbl_caliber"
 
     id = Column(Integer, primary_key=True, autoincrement="auto")
-    caliber_name = Column('caliber_name', String(255), unique=True, nullable=False)
     contributor_id = Column(Integer, ForeignKey('tbl_contributor.id'))
+    caliber_name = Column('caliber_name', String(255), unique=True, nullable=False)
     load = relationship("Load")
 
 
