@@ -18,7 +18,7 @@ PARAMS = {
 class Contributor(Base):
     """ contributor """
 
-    __table_name = 'tbl_contributor'
+    __tablename__ = 'tbl_contributor'
     id = Column(Integer, primary_key=True, autoincrement="auto")
     email = Column('email', String(255), primary_key=True, nullable=False)
     name = Column('name', String(255), nullable=True)
@@ -57,19 +57,20 @@ class Load(Base):
     primer_brand = Column('primer_brand', String(255), nullable=False)
     powder_brand = Column('powder_brand', String(255), nullable=False)
     # feet per second
-    FPS = Column('FPS', Numeric, nullable=True)
+    fps = Column('fps', Numeric, nullable=True)
     # power factor
-    PF = Column('PF', Numeric, nullable=True)
+    pf = Column('pf', Numeric, nullable=True)
 
-    def __init__(self, load_name, powder_brand, powder_charge, primer_brand, primer_type, primer_size, FPS=None, PF= None):
+    def __init__(self, load_name, powder_brand, powder_charge, primer_brand, primer_type, primer_size, fps=None,
+                 pf=None):
         self.load_name = load_name
         self.powder_brand = powder_brand
         self.powder_charge = powder_charge
         self.primer_brand = primer_brand
         self.primer_type = primer_type
         self.primer_size = primer_size
-        self.FPS = FPS
-        self.PF = PF
+        self.fps = fps
+        self.pf = pf
 
 
 
