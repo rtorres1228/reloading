@@ -1,6 +1,6 @@
 from sqlalchemy import Column
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.types import Integer, Text, String
+from sqlalchemy.types import Integer, Text, String, Numeric
 from database_engine import get_database_engine
 
 Base = declarative_base()
@@ -22,7 +22,7 @@ class Weight(Base):
 
     id = Column(Integer, primary_key=True, autoincrement="auto")
     # bullet weight
-    weight = Column('weight', Integer, nullable=False)
+    weight = Column('weight', Numeric, nullable=False)
 
 class Load(Base):
     """load"""
@@ -38,9 +38,9 @@ class Load(Base):
     primer_brand = Column('primer_brand', String(255), nullable=False)
     powder_brand = Column('powder_brand', String(255), nullable=False)
     # feet per second
-    FPS = Column('FPS', Integer, nullable=True)
+    FPS = Column('FPS', Numeric, nullable=True)
     # power factor
-    PF = Column('PF', Integer, nullable=True)
+    PF = Column('PF', Numeric, nullable=True)
 
 class Contributor(Base):
     """ contributor """
