@@ -1,15 +1,18 @@
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-USER = 'rtorres1228'
-PASSWORD = 'Welcome1!'
+USER = 'usr'
+PASSWORD = 'pass!'
 
 
-def get_database_engine():
-    params = {
-                'pool_size': 10,
-                'max_overflow': 2,
-                'pool_recycle': 10,
-                'pool_timeout': 10
-    }
-    engine = create_engine('postgresql://{0}:{1}@localhost:5432/sqlalchemy'.format(USER, PASSWORD), **params)
-    return engine
+params = {
+            'pool_size': 10,
+            'max_overflow': 2,
+            'pool_recycle': 10,
+            'pool_timeout': 10
+}
+
+engine = create_engine('postgresql://usr:pass@localhost:5432/sqlalchemy')
+Session = sessionmaker(bind=engine)
+Base = declarative_base()

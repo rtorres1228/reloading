@@ -4,11 +4,8 @@ from sqlalchemy.types import Integer, Text, String, Numeric
 from sqlalchemy.schema import ForeignKey, PrimaryKeyConstraint, Table
 from sqlalchemy.orm import relationship
 
-from database_engine import get_database_engine
+from database_engine import Base
 
-Base = declarative_base()
-
-DB_ENGINE = get_database_engine()
 
 PARAMS = {
     'save-update': True,
@@ -27,10 +24,13 @@ class Contributor(Base):
     name = Column('name', String(255), nullable=True)
     calibers = relationship("Caliber", **PARAMS)
 
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
 
 class Caliber(Base):
     """User account."""
-
     __tablename__ = "tbl_caliber"
 
     id = Column(Integer, primary_key=True, autoincrement="auto")
@@ -38,10 +38,12 @@ class Caliber(Base):
     caliber_name = Column('caliber_name', String(255), unique=True, nullable=False)
     load = relationship("Load", **PARAMS)
 
+    def __init__(self, caliber_name):
+        self.caliber_name = caliber_name
+
 
 class Load(Base):
     """load"""
-
     __tablename__ = 'tbl_load'
     id = Column(Integer, primary_key=True, autoincrement="auto")
     caliber_id = Column(Integer, ForeignKey='tbl_caliber.id')
@@ -58,6 +60,18 @@ class Load(Base):
     FPS = Column('FPS', Numeric, nullable=True)
     # power factor
     PF = Column('PF', Numeric, nullable=True)
+
+    def __init__(self, load_name, powder_brand, powder_charge, primer_brand, primer_type, primer_size, FPS=None, PF= None):
+        self.load_name = load_name
+        self.powder_brand = powder_brand
+        self.powder_charge = powder_charge
+        self.primer_brand = primer_brand
+        self.primer_type = primer_type
+        self.primer_size = primer_size
+        self.FPS = FPS
+        self.PF = PF
+
+
 
 
 

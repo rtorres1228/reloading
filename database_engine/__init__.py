@@ -1,2 +1,2 @@
 
-from .postgress import get_database_engine
+from .postgress import Base, Session, engine
