@@ -12,7 +12,7 @@ class Contributor(Base):
 
     __tablename__ = 'tbl_contributor'
     id = Column(Integer, primary_key=True, autoincrement="auto")
-    email = Column('email', String(255), primary_key=True, nullable=False)
+    email = Column('email', String(255), unique=False, nullable=False)
     name = Column('name', String(255), nullable=True)
     calibers = relationship("Caliber")
 
@@ -39,7 +39,7 @@ class Load(Base):
     __tablename__ = 'tbl_load'
     id = Column(Integer, primary_key=True, autoincrement="auto")
     caliber_id = Column(Integer, ForeignKey('tbl_caliber.id'))
-    weight = Column('weight', Numeric, nullable=False)
+    bullet_weight = Column('weight', Numeric, nullable=False)
     load_name = Column('load_name', String(255), unique=True, nullable=True)
     powder_charge = Column('powder_charge', Numeric, nullable=False)
     # R or P
@@ -53,9 +53,10 @@ class Load(Base):
     # power factor
     pf = Column('pf', Numeric, nullable=True)
 
-    def __init__(self, load_name, powder_brand, powder_charge, primer_brand, primer_type, primer_size, fps=None,
+    def __init__(self, load_name, bullet_weight, powder_brand, powder_charge, primer_brand, primer_type, primer_size, fps=None,
                  pf=None):
         self.load_name = load_name
+        self.bullet_weight = bullet_weight
         self.powder_brand = powder_brand
         self.powder_charge = powder_charge
         self.primer_brand = primer_brand

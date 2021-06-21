@@ -13,7 +13,7 @@ def test_insert_one_record(boot_strap):
     try:
         contributor = Contributor('Roberto Torres', 'rtorres1228@yahoo.com')
         caliber = Caliber('45 acp')
-        load = Load('mild load', 'Tite Group', 4.3, 'CCI', 'SM Pistol')
+        load = Load('mild load', 230, 'Tite Group', 4.3, 'CCI', 'P', 'S')
 
         session.add(contributor)
         session.add(caliber)
