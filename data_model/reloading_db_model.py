@@ -7,14 +7,6 @@ from sqlalchemy.orm import relationship
 from database_engine import Base
 
 
-PARAMS = {
-    'save-update': True,
-    'delete': True,
-    'delete-orphan': True,
-    'merge': True
-}
-
-
 class Contributor(Base):
     """ contributor """
 
@@ -22,7 +14,7 @@ class Contributor(Base):
     id = Column(Integer, primary_key=True, autoincrement="auto")
     email = Column('email', String(255), primary_key=True, nullable=False)
     name = Column('name', String(255), nullable=True)
-    calibers = relationship("Caliber", **PARAMS)
+    calibers = relationship("Caliber")
 
     def __init__(self, name, email):
         self.name = name
@@ -36,7 +28,7 @@ class Caliber(Base):
     id = Column(Integer, primary_key=True, autoincrement="auto")
     contributor_id = Column(Integer, ForeignKey('tbl_contributor.id'))
     caliber_name = Column('caliber_name', String(255), unique=True, nullable=False)
-    load = relationship("Load", **PARAMS)
+    load = relationship("Load")
 
     def __init__(self, caliber_name):
         self.caliber_name = caliber_name
@@ -46,10 +38,10 @@ class Load(Base):
     """load"""
     __tablename__ = 'tbl_load'
     id = Column(Integer, primary_key=True, autoincrement="auto")
-    caliber_id = Column(Integer, ForeignKey='tbl_caliber.id')
+    caliber_id = Column(Integer, ForeignKey('tbl_caliber.id'))
     weight = Column('weight', Numeric, nullable=False)
     load_name = Column('load_name', String(255), unique=True, nullable=True)
-    powder_charge = Column('powder_charge', Integer, nullable=False)
+    powder_charge = Column('powder_charge', Numeric, nullable=False)
     # R or P
     primer_type = Column('primer_type', String(1), nullable=False)
     # L or S
