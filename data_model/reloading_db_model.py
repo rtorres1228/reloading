@@ -1,5 +1,4 @@
 from sqlalchemy import Column
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.types import Integer, Text, String, Numeric
 from sqlalchemy.schema import ForeignKey, PrimaryKeyConstraint, Table
 from sqlalchemy.orm import relationship
@@ -28,7 +27,7 @@ class Caliber(Base):
     id = Column(Integer, primary_key=True, autoincrement="auto")
     contributor_id = Column(Integer, ForeignKey('tbl_contributor.id'))
     caliber_name = Column('caliber_name', String(255), unique=True, nullable=False)
-    load = relationship("Load")
+    loads = relationship("Load")
 
     def __init__(self, caliber_name):
         self.caliber_name = caliber_name

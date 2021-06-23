@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="MySQL - reloading_db@-python" uuid="c2e65a2e-7cf3-46cb-9c47-34d9b98add6e">
-      <driver-ref>mysql.8</driver-ref>
+    <data-source source="LOCAL" name="sqlalchemy@localhost" uuid="25ceeeab-17a8-4cf0-b06d-b436a8ef4458">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://-python:14331/reloading_db</jdbc-url>
+      <remarks>postgresql://usr:pass@localhost:5432/sqlalchemy</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/sqlalchemy</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

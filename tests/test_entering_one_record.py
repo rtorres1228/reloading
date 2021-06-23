@@ -13,8 +13,9 @@ def test_insert_one_record(boot_strap):
     try:
         contributor = Contributor('Roberto Torres', 'rtorres1228@yahoo.com')
         caliber = Caliber('45 acp')
-        load = Load('mild load', 230, 'Tite Group', 4.3, 'CCI', 'P', 'S')
-
+        load = Load('strong load', 230, 'Tite Group', 4.3, 'CCI', 'P', 'S')
+        contributor.calibers = [caliber]
+        caliber.loads = [load]
         session.add(contributor)
         session.add(caliber)
         session.add(load)
@@ -24,6 +25,3 @@ def test_insert_one_record(boot_strap):
         assert True
     except Exception as e:
         assert False, 'error: {}'.format(str(e))
-
-def test_get_load_by_email():
-    assert get_one_loads_by_email('rtorres1228@yaoho.com'), 'could not get record'
