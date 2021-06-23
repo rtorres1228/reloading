@@ -39,6 +39,7 @@ def test_get_calibers():
 
 def test_get_loads():
     loads = SESSION.query(Load).all()
+    assert loads
 
     LOGGER.info('loads:')
     for load in loads:
@@ -67,6 +68,7 @@ def test_get_all_records():
     calibers = result_dicts(caliber_data)
     loads = result_dicts(load_data)
     result = [*contributors, *calibers, *loads]
+    assert len(result) > 0
     LOGGER.info(f'{result}')
 
 
