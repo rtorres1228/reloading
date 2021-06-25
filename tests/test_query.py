@@ -62,7 +62,7 @@ def test_get_loads_for_caliber():
 def test_get_all_records():
     contributor_data = SESSION.query(Contributor).join(Caliber, Contributor.calibers).join(Load, Caliber.loads).all()
     caliber_data = SESSION.query(Load).join(Load, Caliber.loads).join(Load, Caliber.loads).all()
-    load_data= SESSION.query(Caliber).join(Load, Caliber.loads).join(Load, Caliber.loads).all()
+    load_data = SESSION.query(Caliber).join(Load, Caliber.loads).join(Load, Caliber.loads).all()
 
     contributors = result_dicts(contributor_data)
     calibers = result_dicts(caliber_data)
@@ -86,6 +86,7 @@ def clean_dict(m_dict):
     del m_dict['_sa_instance_state']
     return m_dict
 
+# todo: filter records by email, caliber, bullet weight
 
 
 

@@ -11,9 +11,21 @@ LOGGER = logging.getLogger()
 def test_insert_one_record(boot_strap):
     session = Session()
     try:
+        # first load
         contributor = Contributor('Roberto Torres', 'rtorres1228@yahoo.com')
         caliber = Caliber('45 acp')
         load = Load('strong load', 230, 'Tite Group', 4.3, 'CCI', 'P', 'S')
+        contributor.calibers = [caliber]
+        caliber.loads = [load]
+        session.add(contributor)
+        session.add(caliber)
+        session.add(load)
+        session.commit()
+
+        # second load
+        contributor = Contributor('Roberto Torres', 'rtorres1228@yahoo.com')
+        caliber = Caliber('45 acp')
+        load = Load('strong load', 230, 'Tite Group', 3.8, 'Win', 'P', 'S')
         contributor.calibers = [caliber]
         caliber.loads = [load]
         session.add(contributor)

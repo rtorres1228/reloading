@@ -26,7 +26,7 @@ class Caliber(Base):
 
     id = Column(Integer, primary_key=True, autoincrement="auto")
     contributor_id = Column(Integer, ForeignKey('tbl_contributor.id'))
-    caliber_name = Column('caliber_name', String(255), unique=True, nullable=False)
+    caliber_name = Column('caliber_name', String(255), unique=False, nullable=False)
     loads = relationship("Load")
 
     def __init__(self, caliber_name):
@@ -39,7 +39,7 @@ class Load(Base):
     id = Column(Integer, primary_key=True, autoincrement="auto")
     caliber_id = Column(Integer, ForeignKey('tbl_caliber.id'))
     bullet_weight = Column('weight', Numeric, nullable=False)
-    load_name = Column('load_name', String(255), unique=True, nullable=True)
+    load_name = Column('load_name', String(255), unique=False, nullable=True)
     powder_charge = Column('powder_charge', Numeric, nullable=False)
     # R or P
     primer_type = Column('primer_type', String(1), nullable=False)
