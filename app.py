@@ -1,5 +1,11 @@
-import flask
+from flask import Flask
+from api import loads_api
 
 
-def insert_new_load():
-    pass
+app = Flask(__name__)
+
+app.register_blueprint(loads_api)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
