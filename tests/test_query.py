@@ -10,6 +10,7 @@ from sqlalchemy.orm import Query
 # test.column_descriptions
 LOGGER = logging.getLogger()
 
+
 SESSION = Session()
 atexit.register(SESSION.close)
 
@@ -61,6 +62,18 @@ def test_get_loads_for_caliber():
 
 def test_get_all_records():
     contributor_data = SESSION.query(Contributor, Caliber, Load).join(Caliber, Contributor.calibers).\
+        join(Load, Caliber.loads).all()
+
+    result = result_dict(contributor_data)
+
+    assert len(result) > 0
+    LOGGER.info(f'{result}')
+
+
+def test_get_all_records_per_contributor_email():
+    query_filter = {'email': 'rtorres1228@yahoo.com'}
+    contributor_data = SESSION.query(Contributor, Caliber, Load).filter_by(**query_filter).\
+        join(Caliber, Contributor.calibers). \
         join(Load, Caliber.loads).all()
 
     result = result_dict(contributor_data)

@@ -32,7 +32,7 @@ def get_loads():
     session.commit()
     return jsonify(loads)
 
-#todo: need to group results per contributor.  one contributor should be a dictionary which then contains a list of nodes
+
 @loads_api.route('/all')
 def get_all_records():
     session = Session()
@@ -46,6 +46,19 @@ def get_all_records():
     LOGGER.info(f'{result}')
     return jsonify(f'{result}')
 
+@loads_api.route('/<email>/all')
+def get_all_records_email(email):
+    session = Session()
+    atexit.register(session.close)
+    contributor_data = session.query(Contributor, Caliber, Load).filter_by(email=email).\
+        join(Caliber, Contributor.calibers). \
+        join(Load, Caliber.loads).all()
+
+    result = result_dict(contributor_data)
+    session.commit()
+    assert len(result) > 0
+    LOGGER.info(f'{result}')
+    return jsonify(f'{result}')
 
 def get_dict(rs):
     ret_dict = {}
