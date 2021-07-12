@@ -46,6 +46,7 @@ def get_all_records():
     LOGGER.info(f'{result}')
     return jsonify(f'{result}')
 
+
 @loads_api.route('/<email>/all')
 def get_all_records_email(email):
     session = Session()
@@ -59,6 +60,7 @@ def get_all_records_email(email):
     assert len(result) > 0
     LOGGER.info(f'{result}')
     return jsonify(f'{result}')
+
 
 def get_dict(rs):
     ret_dict = {}
