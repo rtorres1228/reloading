@@ -32,31 +32,30 @@ def get_loads():
     session.commit()
     return jsonify(loads)
 
-
+#todo: need to group results per contributor.  one contributor should be a dictionary which then contains a list of nodes
 @loads_api.route('/all')
 def get_all_records():
     session = Session()
-    contributor_data = session.query(Contributor).join(Caliber, Contributor.calibers).join(Load, Caliber.loads).all()
-    caliber_data = session.query(Load).join(Load, Caliber.loads).join(Load, Caliber.loads).all()
-    load_data = session.query(Caliber).join(Load, Caliber.loads).join(Load, Caliber.loads).all()
+    atexit.register(session.close)
+    contributor_data = session.query(Contributor, Caliber, Load).join(Caliber, Contributor.calibers). \
+        join(Load, Caliber.loads).all()
 
-    contributors = result_dicts(contributor_data)
-    calibers = result_dicts(caliber_data)
-    loads = result_dicts(load_data)
-    result = [*contributors, *calibers, *loads]
+    result = result_dict(contributor_data)
+    session.commit()
     assert len(result) > 0
     LOGGER.info(f'{result}')
     return jsonify(f'{result}')
 
 
-def result_dict(r):
+def get_dict(rs):
     ret_dict = {}
-    ret_dict.update(clean_dict(r.__dict__))
+    for obj in rs:
+        ret_dict.update(clean_dict(obj.__dict__))
     return ret_dict
 
 
-def result_dicts(rs):
-    return list(map(result_dict, rs))
+def result_dict(rs):
+    return list(map(get_dict, rs))
 
 
 def clean_dict(m_dict):

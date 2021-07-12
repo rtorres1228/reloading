@@ -60,26 +60,24 @@ def test_get_loads_for_caliber():
 
 
 def test_get_all_records():
-    contributor_data = SESSION.query(Contributor).join(Caliber, Contributor.calibers).join(Load, Caliber.loads).all()
-    caliber_data = SESSION.query(Load).join(Load, Caliber.loads).join(Load, Caliber.loads).all()
-    load_data = SESSION.query(Caliber).join(Load, Caliber.loads).join(Load, Caliber.loads).all()
+    contributor_data = SESSION.query(Contributor, Caliber, Load).join(Caliber, Contributor.calibers).\
+        join(Load, Caliber.loads).all()
 
-    contributors = result_dicts(contributor_data)
-    calibers = result_dicts(caliber_data)
-    loads = result_dicts(load_data)
-    result = [*contributors, *calibers, *loads]
+    result = result_dict(contributor_data)
+
     assert len(result) > 0
     LOGGER.info(f'{result}')
 
 
-def result_dict(r):
+def get_dict(rs):
     ret_dict = {}
-    ret_dict.update(clean_dict(r.__dict__))
+    for obj in rs:
+        ret_dict.update(clean_dict(obj.__dict__))
     return ret_dict
 
 
-def result_dicts(rs):
-    return list(map(result_dict, rs))
+def result_dict(rs):
+    return list(map(get_dict, rs))
 
 
 def clean_dict(m_dict):
