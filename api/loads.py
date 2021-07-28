@@ -1,8 +1,8 @@
 import atexit
 import logging
 from flask import jsonify, Blueprint
-from database_engine import Base, Session, engine
 
+from database_engine import Base, Session, engine
 from data_model.reloading_db_model import Contributor, Caliber, Load
 
 LOGGER = logging.getLogger()

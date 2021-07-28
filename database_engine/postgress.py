@@ -1,10 +1,16 @@
+
+import yaml
+
 from sqlalchemy import create_engine
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-USER = 'usr'
-PASSWORD = 'pass!'
-
+with open('/Users/robertotorres/reloading/secrets/config.yml') as config:
+    app_config = yaml.safe_load_all(config)
+    for config_data in app_config:
+        print(config_data)
+        conn = config_data['postgresql']['conn_string']
 
 params = {
             'pool_size': 10,
@@ -13,6 +19,6 @@ params = {
             'pool_timeout': 10
 }
 
-engine = create_engine('postgresql://usr:pass@localhost:5432/sqlalchemy')
+engine = create_engine(conn, **params)
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
