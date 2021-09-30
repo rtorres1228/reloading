@@ -1,5 +1,5 @@
-import time
 import pytest
+import time
 import logging
 from database_engine import Base, engine
 
