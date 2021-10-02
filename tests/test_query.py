@@ -50,13 +50,14 @@ def test_get_loads():
 
 # @pytest.mark.skip('skip')
 def test_get_loads_for_caliber():
-    loads_for_caliber = SESSION.query(Caliber, Load).join(Load, Caliber.loads).all()
+    loads_for_caliber = SESSION.query(Caliber, Load, Contributor).join(Caliber, Contributor.calibers).join(Load, Caliber.loads).all()
     SESSION.commit()
     assert loads_for_caliber
 
     for load in loads_for_caliber:
-        caliber, load = load
-        LOGGER.info(f'{caliber.caliber_name}, {load.load_name}')
+        caliber, load, contributor = load
+        LOGGER.info(f'contributor: {contributor.email}, for caliber: {caliber.caliber_name}, load name: {load.load_name}, bullet weight: {load.bullet_weight}, powder brand: {load.powder_brand}, powder charge: {load.powder_charge}')
+
 
 
 def test_get_all_records():
