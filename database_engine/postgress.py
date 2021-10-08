@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-with open('/Users/robertotorres/reloading/secrets/config.yml') as config:
+with open('./secrets/config.yml') as config:
     app_config = yaml.safe_load_all(config)
     for config_data in app_config:
         print(config_data)
