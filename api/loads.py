@@ -55,7 +55,6 @@ def get_all_records():
         raise InvalidUsage('no loads were found please try again')
     return jsonify(f'{result}')
 
-
 @loads_api.route('/email/<email>/all')
 def get_all_records_email(email):
     session = Session()
@@ -72,13 +71,13 @@ def get_all_records_email(email):
 
 @loads_api.route('/caliber/<caliber>/all')
 def get_load__caliber(caliber):
+    caliber = '%{}%'.format(caliber)
     session = Session()
-    loads_for_caliber = session.query(Caliber, Load, Contributor).join(Caliber, Contributor.calibers).filter_by(caliber_name=caliber).join(Load, Caliber.loads).all()
+    loads_for_caliber = session.query(Caliber, Load, Contributor).join(Caliber, Contributor.calibers).filter(Caliber.caliber_name.like(caliber)).join(Load, Caliber.loads).all()
     result = result_dict(loads_for_caliber)
     session.commit()
     if not len(result) > 0:
         raise InvalidUsage('no loads were found for the specified caliber, please try again')
-
     LOGGER.info(f'{result}')
     return jsonify(f'{result}')
 

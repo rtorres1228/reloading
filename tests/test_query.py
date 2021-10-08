@@ -1,6 +1,7 @@
 import pytest
 import logging
 import atexit
+from sqlalchemy.orm import Query
 
 from database_engine import Base, Session, engine
 from data_model.reloading_db_model import Contributor, Caliber, Load
@@ -10,9 +11,11 @@ from collections.abc import Iterable
 # test.column_descriptions
 LOGGER = logging.getLogger()
 
-
+CALIBER = '45'
 SESSION = Session()
 atexit.register(SESSION.close)
+
+Query
 
 
 def test_get_contributors():
@@ -26,33 +29,9 @@ def test_get_contributors():
     SESSION.commit()
 
 
-def test_get_calibers():
-    calibers = SESSION.query(Caliber).all()
-
-    assert calibers, 'nothing was returned'
-
-    LOGGER.info('\n### calibers:')
-    for caliber in calibers:
-        LOGGER.info(f'name: {caliber.caliber_name}')
-
-    SESSION.commit()
-
-
-def test_get_loads():
-    loads = SESSION.query(Load).all()
-    SESSION.commit()
-    assert loads
-    assert isinstance(loads, Iterable)
-
-    LOGGER.info('loads:%s', loads)
-    for load in loads:
-        LOGGER.info(f'name: {load.caliber_id}')
-
-    
-
 
 # @pytest.mark.skip('skip')
-def test_get_loads_for_caliber():
+def test_get_loads():
     loads_for_caliber = SESSION.query(Caliber, Load, Contributor).join(Caliber, Contributor.calibers).join(Load, Caliber.loads).all()
     SESSION.commit()
     assert loads_for_caliber
@@ -61,7 +40,14 @@ def test_get_loads_for_caliber():
         caliber, load, contributor = load
         LOGGER.info(f'contributor: {contributor.email}, for caliber: {caliber.caliber_name}, load name: {load.load_name}, bullet weight: {load.bullet_weight}, powder brand: {load.powder_brand}, powder charge: {load.powder_charge}')
 
-
+def test_get_load_for_caliber__using_like():
+    caliber = '%{}%'.format(CALIBER)
+    loads_for_caliber = SESSION.query(Caliber, Load, Contributor).join(Caliber, Contributor.calibers).filter(Caliber.caliber_name.like(caliber)).join(Load, Caliber.loads).all()
+    assert loads_for_caliber
+    for load in loads_for_caliber:
+        caliber, load, contributor = load
+        LOGGER.info(f'contributor: {contributor.email}, for caliber: {caliber.caliber_name}, load name: {load.load_name}, bullet weight: {load.bullet_weight}, powder brand: {load.powder_brand}, powder charge: {load.powder_charge}')
+    SESSION.commit()
 
 def test_get_all_records():
     contributor_data = SESSION.query(Contributor, Caliber, Load).join(Caliber, Contributor.calibers).\
