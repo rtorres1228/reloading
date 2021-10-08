@@ -1,8 +1,6 @@
 from flask import Flask
-from api import loads_api
+from api import loads_api, app
 
-
-app = Flask(__name__)
 
 app.register_blueprint(loads_api)
 

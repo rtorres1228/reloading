@@ -1,1 +1,1 @@
-from .loads import loads_api
+from .loads import loads_api, app

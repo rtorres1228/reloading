@@ -5,6 +5,7 @@ import atexit
 from database_engine import Base, Session, engine
 from data_model.reloading_db_model import Contributor, Caliber, Load
 from sqlalchemy.orm import Query
+from collections.abc import Iterable
 
 # test.column_descriptions
 LOGGER = logging.getLogger()
@@ -39,13 +40,15 @@ def test_get_calibers():
 
 def test_get_loads():
     loads = SESSION.query(Load).all()
+    SESSION.commit()
     assert loads
+    assert isinstance(loads, Iterable)
 
-    LOGGER.info('loads:')
+    LOGGER.info('loads:%s', loads)
     for load in loads:
         LOGGER.info(f'name: {load.caliber_id}')
 
-    SESSION.commit()
+    
 
 
 # @pytest.mark.skip('skip')
