@@ -97,18 +97,52 @@ def get_load__caliber(caliber):
 
 @loads_api.route('/enter_one_load/<user_name>/<email>', methods=['POST'])
 def insert_one_record(user_name, email):
-    if request.method == 'POST':
-        user_name = user_name
-        email = email
-        session = Session()
-        contributor = Contributor(user_name, email)
-        caliber = Caliber('45 acp')
-        load = Load('strong load', 230, 'Tite Group', 4.3, 'CCI', 'P', 'S')
-        contributor.calibers = [caliber]
-        caliber.loads = [load]
-        session.add(contributor)
-        session.add(caliber)
-        session.add(load)
-        session.commit()
-    else:
-        raise InvalidUsage('this end point only accepts Post Method', status_code=400)
+    ''' post dict:
+        {caliber: '', 
+          load_name: '',
+          bullet_weight: '',
+          powder_brand: '',
+          powder_charge: '',
+          primer_brand: '',
+          primer_size: '',
+          firearm_type: '' }
+          '''
+    try:
+        if request.method == 'POST':
+            user_name = user_name
+            email = email
+            session = Session()
+
+             
+            # https://stackoverflow.com/questions/10999990/get-raw-post-body-in-python-flask-regardless-of-content-type-header
+            if len(request.get_data()) < 0:
+                raise ValueError('you did not supply any params to the post')
+
+
+            load_name = request.json.get('load_name')
+            caliber_name = request.json.get('caliber')
+            bullet_weight = request.json.get('bullet_weight')
+            powder_brand= request.json.get('powder_brand')
+            powder_charge = request.json.get('powder_charge')
+            primer_brand = request.json.get('primer_brand')
+            primer_size = request.json.get('primer_size')
+            primer_type = request.json.get('primer_type')
+            oal = request.json.get('load_oal')
+            fps = request.json.get('feet_per_second')
+            pf = request.json.get('pf')
+
+            contributor = Contributor(user_name, email)
+            caliber = Caliber(caliber_name)
+            load = Load(load_name, bullet_weight, powder_brand, powder_charge, primer_brand, primer_type, primer_size, fps, pf, oal)
+            contributor.calibers = [caliber]
+            caliber.loads = [load]
+
+            session.add(contributor)
+            session.add(caliber)
+            session.add(load)
+            session.commit()
+            return jsonify('the record was successfully submitted, thank you for the entry')
+        else:
+            raise InvalidUsage('this end point only accepts Post Method', status_code=400)
+    except Exception as e:
+            raise InvalidUsage('an error has occurred: {}'.format(str(e)), status_code=400)

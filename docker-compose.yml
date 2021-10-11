@@ -17,7 +17,7 @@ services:
   reloading:
     depends_on:
       - postgres
-    image: rtorres1228/reload:v6.0
+    image: rtorres1228/reload:v7.0
     container_name: Api
     build:
       context: .

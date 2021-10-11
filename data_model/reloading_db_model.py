@@ -40,6 +40,7 @@ class Load(Base):
     caliber_id = Column(Integer, ForeignKey('tbl_caliber.id'))
     bullet_weight = Column('weight', Numeric, nullable=False)
     load_name = Column('load_name', String(255), unique=False, nullable=True)
+    load_oal = Column('load_oal', String(255), unique=False, nullable=True)
     powder_charge = Column('powder_charge', Numeric, nullable=False)
     # R or P
     primer_type = Column('primer_type', String(1), nullable=False)
@@ -52,8 +53,10 @@ class Load(Base):
     # power factor
     pf = Column('pf', Numeric, nullable=True)
 
+    oal = Column('oal', Numeric, nullable=True)
+
     def __init__(self, load_name, bullet_weight, powder_brand, powder_charge, primer_brand, primer_type, primer_size, fps=None,
-                 pf=None):
+                 pf=None, oal=None):
         self.load_name = load_name
         self.bullet_weight = bullet_weight
         self.powder_brand = powder_brand
@@ -63,6 +66,7 @@ class Load(Base):
         self.primer_size = primer_size
         self.fps = fps
         self.pf = pf
+        self.load_oal
 
 
 
