@@ -8,7 +8,7 @@ from utils.reloading_functions import get_one_loads_by_email
 LOGGER = logging.getLogger()
 
 
-@pytest.mark.skip('we should do this once.  this will wipe out all the data, becareful')
+#@pytest.mark.skip('we should do this once.  this will wipe out all the data, becareful')
 def test_insert_one_record(boot_strap):
     session = Session()
     try:

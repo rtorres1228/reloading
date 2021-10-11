@@ -1,0 +1,33 @@
+version: '3.4'
+# docker network create -d bridge my-network
+# https://medium.com/it-dead-inside/docker-containers-and-localhost-cannot-assign-requested-address-6ac7bc0d042b
+services:
+  postgres:
+    image: postgres
+    container_name: DB
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: usr
+      POSTGRES_DB: sqlalchemy
+    ports:
+      - "5432:5432"
+    networks:
+      - rt-container
+
+  reloading:
+    depends_on:
+      - postgres
+    image: rtorres1228/reload:v6.0
+    container_name: Api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - rt-container
+
+networks:
+  rt-container:
+    external: true
+

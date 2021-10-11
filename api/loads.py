@@ -1,6 +1,7 @@
 import atexit
 import logging
-from flask import jsonify, Blueprint, Flask
+import time
+from flask import jsonify, Blueprint, Flask, request
 from collections.abc import Iterable
 
 from api.utils.conver_to_dictionary import result_dict, get_dict
@@ -22,6 +23,18 @@ def handle_invalid_usage(error):
     return response
 
 
+@loads_api.route('/bootstrap/db')
+def boot_strap():
+    LOGGER.info('dropping all schema')
+    Base.metadata.drop_all(engine)
+    LOGGER.info('finished dropping all schema')
+    time.sleep(3)
+    LOGGER.info('bootstraping the schema')
+    Base.metadata.create_all(engine)
+    LOGGER.info('finished bootstrapping the schema')
+    return jsonify({'result': 'finished bootstrapping the schema'})
+
+
 '''getter functions'''
 @loads_api.route('/contributors/all')
 def get_contributors():
@@ -38,7 +51,7 @@ def get_loads():
     session.commit()
     LOGGER.info('result: %s', result)
     if not len(result) > 0:
-        raise InvalidUsage('no loads were found in the db')
+        raise InvalidUsage('no loads were found in the db', status_code=404)
     return jsonify(f'{result}')
 
 
@@ -52,7 +65,7 @@ def get_all_records():
     session.commit()
     LOGGER.info(f'{result}')
     if not len(result) > 0:
-        raise InvalidUsage('no loads were found please try again')
+        raise InvalidUsage('no loads were found please try again', status_code=404)
     return jsonify(f'{result}')
 
 @loads_api.route('/email/<email>/all')
@@ -66,7 +79,7 @@ def get_all_records_email(email):
     session.commit()
     LOGGER.info(f'{result}')
     if not len(result) > 0:
-        raise InvalidUsage('no loads were found please try again')
+        raise InvalidUsage('no loads were found please try again', status_code=404)
     return jsonify(f'{result}')
 
 @loads_api.route('/caliber/<caliber>/all')
@@ -77,7 +90,25 @@ def get_load__caliber(caliber):
     result = result_dict(loads_for_caliber)
     session.commit()
     if not len(result) > 0:
-        raise InvalidUsage('no loads were found for the specified caliber, please try again')
+        raise InvalidUsage('no loads were found for the specified caliber, please try again', status_code=404)
     LOGGER.info(f'{result}')
     return jsonify(f'{result}')
 
+
+@loads_api.route('/enter_one_load/<user_name>/<email>', methods=['POST'])
+def insert_one_record(user_name, email):
+    if request.method == 'POST':
+        user_name = user_name
+        email = email
+        session = Session()
+        contributor = Contributor(user_name, email)
+        caliber = Caliber('45 acp')
+        load = Load('strong load', 230, 'Tite Group', 4.3, 'CCI', 'P', 'S')
+        contributor.calibers = [caliber]
+        caliber.loads = [load]
+        session.add(contributor)
+        session.add(caliber)
+        session.add(load)
+        session.commit()
+    else:
+        raise InvalidUsage('this end point only accepts Post Method', status_code=400)
