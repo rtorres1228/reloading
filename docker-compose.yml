@@ -7,13 +7,23 @@ services:
     container_name: DB
     environment:
       POSTGRES_PASSWORD: pass
+      # for this to work use: docker cp ./secrets/postgres-passwd 733ada73f034:/run/postgress-passwd
+      # https://stackoverflow.com/questions/22907231/how-to-copy-files-from-host-to-docker-container
+      # or use docker-compose up --no-recreate  " once you have copied the file.  you must stop the containers... do not do a docker-compose down"
+      # POSTGRES_PASSWORD_FILE: run/postgress-passwd
       POSTGRES_USER: usr
       POSTGRES_DB: sqlalchemy
+    restart: always
     ports:
       - "5432:5432"
     networks:
       - rt-container
-
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # this will give me access to the folder from my host
+      # https://devopsheaven.com/docker/docker-compose/volumes/2018/01/16/volumes-in-docker-compose.html
+      # ~/postreg/data:/var/lib/postgresql/data
+    
   reloading:
     depends_on:
       - postgres
@@ -30,4 +40,12 @@ services:
 networks:
   rt-container:
     external: true
+
+# https://docs.docker.com/storage/volumes/
+volumes:
+  postgres_data:
+    external: true
+  
+
+
 
