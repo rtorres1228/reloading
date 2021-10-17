@@ -6,8 +6,8 @@ services:
     #image: postgres:rt
     container_name: DB
     build:
-      context: .
-      dockerfile: ./docker_postgres/Dockerfile
+      context: ./docker_postgres
+      dockerfile: Dockerfile.postgres
     environment:
       # POSTGRES_PASSWORD: pass
       POSTGRES_PASSWORD_FILE: /app/secrets/postgres-passwd
@@ -31,7 +31,6 @@ services:
     container_name: Api
     build:
       context: .
-      dockerfile: ./Dockerfile
     ports:
       - "5000:5000"
     networks:

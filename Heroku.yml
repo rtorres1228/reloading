@@ -1,0 +1,17 @@
+# Resources to provision on app creation
+setup: 
+    addons: 
+
+# Reference the Dockerfiles to build into Docker images
+build: 
+    docker: 
+        api: Dockerfile 
+        database: Dockerfile.postgres 
+    config:
+        NODE_ENV: production
+        POSTGRES_USER: usr 
+	    POSTGRES_DB: sqlalchemy
+	    POSTGRES_PASSWORD: pass
+run: 
+    api: python app.py 
+    

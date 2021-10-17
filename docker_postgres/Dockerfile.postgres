@@ -1,0 +1,10 @@
+# you have to run this command
+# docker build -f docker_postgres/Dockerfile --force-rm -t reload_db:rt .
+# for the secrets to be copied
+
+FROM postgres:latest
+
+
+WORKDIR /app/secrets
+
+COPY secrets/postgres-passwd .
