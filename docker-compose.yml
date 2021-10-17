@@ -3,14 +3,14 @@ version: '3.4'
 # https://medium.com/it-dead-inside/docker-containers-and-localhost-cannot-assign-requested-address-6ac7bc0d042b
 services:
   postgres:
-    image: postgres
+    #image: postgres:rt
     container_name: DB
+    build:
+      context: .
+      dockerfile: ./docker_postgres/Dockerfile
     environment:
-      POSTGRES_PASSWORD: pass
-      # for this to work use: docker cp ./secrets/postgres-passwd 733ada73f034:/run/postgress-passwd
-      # https://stackoverflow.com/questions/22907231/how-to-copy-files-from-host-to-docker-container
-      # or use docker-compose up --no-recreate  " once you have copied the file.  you must stop the containers... do not do a docker-compose down"
-      # POSTGRES_PASSWORD_FILE: run/postgress-passwd
+      # POSTGRES_PASSWORD: pass
+      POSTGRES_PASSWORD_FILE: /app/secrets/postgres-passwd
       POSTGRES_USER: usr
       POSTGRES_DB: sqlalchemy
     restart: always
@@ -27,7 +27,7 @@ services:
   reloading:
     depends_on:
       - postgres
-    image: rtorres1228/reload:v7.0
+    #image: rtorres1228/reload:v7.0
     container_name: Api
     build:
       context: .
