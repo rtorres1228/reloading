@@ -19,7 +19,8 @@ services:
     networks:
       - rt-container
     volumes:
-      - postgresdata:data/var/lib/postgresql/data
+      - rdb4:/mount/data
+      # - rdb4:/var/lib/postgresql/data
       # this will give me access to the folder from my host
       # https://devopsheaven.com/docker/docker-compose/volumes/2018/01/16/volumes-in-docker-compose.html
       # ~/postreg/data:/var/lib/postgresql/data
@@ -28,6 +29,7 @@ services:
     depends_on:
       - postgres
     image: rtorres1228/reload:v7.0
+    domainname: "reloading-guapo"
     container_name: main-api
     build:
       context: .
@@ -42,11 +44,11 @@ networks:
 
 # https://docs.docker.com/storage/volumes/
 volumes:
-  postgresdata:
+  rdb4:
     # external: true
     driver: azure_file
     driver_opts:
-      share_name: data
+      share_name: rdb
       storage_account_name: postgressvol
 
    
