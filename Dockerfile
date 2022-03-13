@@ -13,6 +13,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+#copy everything from my current folder in host to the we are currently in the container
 COPY . . 
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder

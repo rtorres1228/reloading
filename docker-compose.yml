@@ -3,8 +3,8 @@ version: '3.4'
 # https://medium.com/it-dead-inside/docker-containers-and-localhost-cannot-assign-requested-address-6ac7bc0d042b
 services:
   postgres:
-    #image: postgres:rt
-    container_name: DB
+    image: rtorres1228/postgres:v1.0
+    container_name: database-container
     build:
       context: ./docker_postgres
       dockerfile: Dockerfile.postgres
@@ -19,7 +19,7 @@ services:
     networks:
       - rt-container
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgresdata:data/var/lib/postgresql/data
       # this will give me access to the folder from my host
       # https://devopsheaven.com/docker/docker-compose/volumes/2018/01/16/volumes-in-docker-compose.html
       # ~/postreg/data:/var/lib/postgresql/data
@@ -27,8 +27,8 @@ services:
   reloading:
     depends_on:
       - postgres
-    #image: rtorres1228/reload:v7.0
-    container_name: Api
+    image: rtorres1228/reload:v7.0
+    container_name: main-api
     build:
       context: .
     ports:
@@ -38,12 +38,18 @@ services:
 
 networks:
   rt-container:
-    external: true
+#    external: true
 
 # https://docs.docker.com/storage/volumes/
 volumes:
-  postgres_data:
-    external: true
+  postgresdata:
+    # external: true
+    driver: azure_file
+    driver_opts:
+      share_name: data
+      storage_account_name: postgressvol
+
+   
   
 
 
